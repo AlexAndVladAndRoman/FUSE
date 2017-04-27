@@ -30,7 +30,7 @@ void log_msg(const char *format, ...) {
     vfprintf(BB_DATA->logfile, format, ap);
 }
 
-int log_error(char *func) {
+int log_error(char const *func) {
     int ret = -errno;
     log_msg("    ERROR %s: %s\n", func, strerror(errno));
     return ret;
@@ -72,13 +72,13 @@ void log_fi(struct fuse_file_info *fi) {
     log_struct(fi, lock_owner, 0x % 016llx, );
 }
 
-void log_retstat(char *func, int retstat) {
+void log_retstat(char const *func, int retstat) {
     int errsave = errno;
     log_msg("    %s returned %d\n", func, retstat);
     errno = errsave;
 }
 
-int log_syscall(char *func, int retstat, int min_ret) {
+int log_syscall(char const *func, int retstat, int min_ret) {
     log_retstat(func, retstat);
 
     if (retstat < min_ret) {
