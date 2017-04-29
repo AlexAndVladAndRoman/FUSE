@@ -13,13 +13,21 @@ int bb_getattr(const char *path, struct stat *statbuf) {
     int retstat;
     char fpath[PATH_MAX];
 
+    //SOME SHIT
+    if (std::string(path) == "/shirvik_pidr") {
+        statbuf->st_mode = 0x8000 | 644;
+        statbuf->st_nlink = 1;
+        statbuf->st_size = 0;
+        return 0;
+    }
+
     log_msg("\nbb_getattr(path=\"%s\", statbuf=0x%08x)\n", path, statbuf);
     bb_fullpath(fpath, path);
     retstat = log_syscall("lstat", lstat(fpath, statbuf), 0);
     log_stat(statbuf);
 
     //SOME SHIT
-    if (std::string(path) == "\\") {
+    if (std::string(path) == "/") {
         statbuf->st_nlink++;
     }
 
