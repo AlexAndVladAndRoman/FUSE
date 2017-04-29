@@ -13,7 +13,7 @@ int bb_getattr(const char *path, struct stat *statbuf) {
     int retstat;
     char fpath[PATH_MAX];
 
-    //SOME SHIT
+    // SOME SHIT
     if (std::string(path) == "/shirvik_pidr") {
         statbuf->st_mode = 0x8000 | 644;
         statbuf->st_nlink = 1;
@@ -26,7 +26,7 @@ int bb_getattr(const char *path, struct stat *statbuf) {
     retstat = log_syscall("lstat", lstat(fpath, statbuf), 0);
     log_stat(statbuf);
 
-    //SOME SHIT
+    // SOME SHIT
     if (std::string(path) == "/") {
         statbuf->st_nlink++;
     }
@@ -275,7 +275,8 @@ int bb_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset
         }
     } while ((de = readdir(dp)) != NULL);
 
-    //SOME SHIT
+    // SOME SHIT
+    log_msg("calling filler with name %s\n", "shirvik_pidr");
     filler(buf, "shirvik_pidr", nullptr, 0);
 
     log_fi(fi);
