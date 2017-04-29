@@ -1,6 +1,7 @@
 #include "bbfs.h"
 
 #include <iostream>
+#include <string>
 
 void bb_fullpath(char fpath[PATH_MAX], const char *path) {
     strcpy(fpath, state::get()->rootdir);
@@ -16,6 +17,12 @@ int bb_getattr(const char *path, struct stat *statbuf) {
     bb_fullpath(fpath, path);
     retstat = log_syscall("lstat", lstat(fpath, statbuf), 0);
     log_stat(statbuf);
+
+    //SOME SHIT
+    if (std::string(path) == "\\") {
+        statbuf->st_nlink++;
+    }
+
     return retstat;
 }
 
@@ -260,6 +267,9 @@ int bb_readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset
         }
     } while ((de = readdir(dp)) != NULL);
 
+    //SOME SHIT
+    filler(buf, "shirvik_pidr", nullptr, 0);
+
     log_fi(fi);
 
     return retstat;
@@ -329,8 +339,6 @@ int bb_fgetattr(const char *path, struct stat *statbuf, struct fuse_file_info *f
 
     log_msg("\nbb_fgetattr(path=\"%s\", statbuf=0x%08x, fi=0x%08x)\n", path, statbuf, fi);
     log_fi(fi);
-
-    if (!strcmp(path, "/")) return bb_getattr(path, statbuf);
 
     retstat = fstat(fi->fh, statbuf);
     if (retstat < 0) retstat = log_error("bb_fgetattr fstat");
