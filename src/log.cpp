@@ -12,6 +12,7 @@
 #include <sys/types.h>
 
 #include "log.h"
+#include "state.h"
 
 FILE *log_open() {
     FILE *logfile;
@@ -27,7 +28,7 @@ FILE *log_open() {
 void log_msg(const char *format, ...) {
     va_list ap;
     va_start(ap, format);
-    vfprintf(BB_DATA->logfile, format, ap);
+    vfprintf(state::get()->logfile, format, ap);
 }
 
 int log_error(char const *func) {
@@ -43,8 +44,8 @@ void log_fuse_context(struct fuse_context *context) {
     log_struct(context, gid, % d, );
     log_struct(context, pid, % d, );
     log_struct(context, private_data, % 08x, );
-    log_struct(((struct bb_state *)context->private_data), logfile, % 08x, );
-    log_struct(((struct bb_state *)context->private_data), rootdir, % s, );
+    log_struct(state::get(), logfile, % 08x, );
+    log_struct(state::get(), rootdir, % s, );
     log_struct(context, umask, % 05o, );
 }
 

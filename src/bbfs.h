@@ -17,6 +17,7 @@
 #include <unistd.h>
 
 #include "log.h"
+#include "state.h"
 
 void bb_fullpath(char fpath[PATH_MAX], const char *path);
 int bb_getattr(const char *path, struct stat *statbuf);

@@ -4,7 +4,7 @@ struct fuse_operations bb_oper;
 void init_operations() {
     bb_oper.getattr = bb_getattr;
     bb_oper.readlink = bb_readlink;
-    bb_oper.getdir = NULL;
+    bb_oper.getdir = nullptr; // ???
     bb_oper.mknod = bb_mknod;
     bb_oper.mkdir = bb_mkdir;
     bb_oper.unlink = bb_unlink;
@@ -36,7 +36,6 @@ void init_operations() {
 
 int main(int argc, char *argv[]) {
     int fuse_stat;
-    struct bb_state *bb_data;
 
     if ((getuid() == 0) || (geteuid() == 0)) {
         fprintf(stderr, "Running BBFS as root opens unnacceptable security holes\n");
@@ -44,19 +43,15 @@ int main(int argc, char *argv[]) {
     }
     if ((argc < 3) || (argv[argc - 2][0] == '-') || (argv[argc - 1][0] == '-')) bb_usage();
 
-    /* bb_data = malloc(sizeof(struct bb_state)); */
-    bb_data = new bb_state();
+    state* data = new state(realpath(argv[argc - 2], nullptr), log_open());
 
-    bb_data->rootdir = realpath(argv[argc - 2], NULL);
     argv[argc - 2] = argv[argc - 1];
-    argv[argc - 1] = NULL;
+    argv[argc - 1] = nullptr;
     argc--;
-
-    bb_data->logfile = log_open();
 
     fprintf(stderr, "about to call fuse_main\n");
     init_operations();
-    fuse_stat = fuse_main(argc, argv, &bb_oper, bb_data);
+    fuse_stat = fuse_main(argc, argv, &bb_oper, data);
     fprintf(stderr, "fuse_main returned %d\n", fuse_stat);
 
     return fuse_stat;

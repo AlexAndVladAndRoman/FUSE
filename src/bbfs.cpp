@@ -1,9 +1,11 @@
 #include "bbfs.h"
 
+#include <iostream>
+
 void bb_fullpath(char fpath[PATH_MAX], const char *path) {
-    strcpy(fpath, BB_DATA->rootdir);
+    strcpy(fpath, state::get()->rootdir);
     strncat(fpath, path, PATH_MAX);
-    log_msg("    bb_fullpath:  rootdir = \"%s\", path = \"%s\", fpath = \"%s\"\n", BB_DATA->rootdir, path, fpath);
+    log_msg("    bb_fullpath:  rootdir = \"%s\", path = \"%s\", fpath = \"%s\"\n", state::get()->rootdir, path, fpath);
 }
 
 int bb_getattr(const char *path, struct stat *statbuf) {
@@ -289,7 +291,7 @@ void *bb_init(struct fuse_conn_info *conn) {
     log_conn(conn);
     log_fuse_context(fuse_get_context());
 
-    return BB_DATA;
+    return state::get();
 }
 
 void bb_destroy(void *userdata) {
