@@ -16,6 +16,8 @@ add_executable(main
         src/bbfs.cpp
         src/log.cpp
         src/main.cpp
+        src/mp3fs.cpp
+        src/context.cpp
 )
 
 target_link_libraries(main ${FUSE_LIBRARIES})

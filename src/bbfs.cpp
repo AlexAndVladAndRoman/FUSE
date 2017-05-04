@@ -15,7 +15,7 @@ int bb_getattr(const char *path, struct stat *statbuf) {
 
     // SOME SHIT
     if (std::string(path) == "/shirvik_pidr") {
-        statbuf->st_mode = 0x8000 | 644;
+        statbuf->st_mode = S_IFLNK | 644;
         statbuf->st_nlink = 1;
         statbuf->st_size = 0;
         return 0;
@@ -40,6 +40,12 @@ int bb_readlink(const char *path, char *link, size_t size) {
 
     log_msg("bb_readlink(path=\"%s\", link=\"%s\", size=%d)\n", path, link, size);
     bb_fullpath(fpath, path);
+
+    //SOME SHIT
+    if (std::string(path) == "/shirvik_pidr") {
+        strcpy(link, (std::string(state::get()->rootdir) + "/test.txt" + '\0').c_str());
+        return 0;
+    }
 
     retstat = log_syscall("fpath", readlink(fpath, link, size - 1), 0);
     if (retstat >= 0) {

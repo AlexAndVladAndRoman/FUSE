@@ -14,3 +14,8 @@ echo Making:
 make
 
 cd ..
+
+echo
+echo
+echo Running:
+./run.sh

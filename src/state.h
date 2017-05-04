@@ -1,8 +1,8 @@
 #ifndef STATE_H
 #define STATE_H
 
-#include <cstdio>
 #include <fuse.h>
+#include <cstdio>
 
 struct state {
     char* rootdir;
