@@ -1,11 +1,3 @@
-//
-//  mp3_file.c
-//  FUSEFilesystem
-//
-//  Created by Alex Shirvinsky on 06.05.17.
-//  Copyright © 2017 Alex Shirvinsky. All rights reserved.
-//
-
 #include "mp3_file.h"
 #include <string>
 #include <fstream>
