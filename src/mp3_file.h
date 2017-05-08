@@ -17,6 +17,7 @@ private:
     };
     
     std::string artist, album, year, tag, comment, title;
+    std::string path;
     int genre;
     
 public:
@@ -29,6 +30,8 @@ public:
     std::string get_comment();
     std::string get_title();
     std::string get_genre();
+
+    std::string get_property(std::string property);
 };
 
 #endif /* mp3_file_h */

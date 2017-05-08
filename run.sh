@@ -3,4 +3,4 @@
 fusermount -u to
 rm -f *.log
 
-./main from/ to/
+./main "/media/external/Music/Music/Jack White/" to/
