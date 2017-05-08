@@ -41,11 +41,11 @@ fuse_operations *mp3fs::get_operations() {
     operations->readlink = readlink;
     operations->readdir = readdir;
 
-    operations->release = [](const char *, fuse_file_info *) { return 0; };
+    /* operations->release = [](const char *, fuse_file_info *) { return 0; }; */
 
-    operations->fsync = [](const char *, int, fuse_file_info *) { return 0; };
+    /* operations->fsync = [](const char *, int, fuse_file_info *) { return 0; }; */
 
-    operations->opendir = [](const char *, fuse_file_info *) { return 0; };
+    /* operations->opendir = [](const char *, fuse_file_info *) { return 0; }; */
 
     /* operations->statfs = [](const char *path, struct statvfs* b) { */
     /* debug::log("fsync"); */
