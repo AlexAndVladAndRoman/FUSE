@@ -5,9 +5,7 @@
 mp3_file::mp3_file(std::string path) {
     TAGdata tagStruct;
     std::ifstream mp3File;
-    char buffer[mp3TagSize + 1];
     mp3File.open(path);
-    buffer[mp3TagSize] = '\0';
     if (!mp3File) {
         std::cerr << "Can't open " << path << std::endl;
         return;

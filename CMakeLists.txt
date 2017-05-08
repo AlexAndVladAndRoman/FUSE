@@ -18,6 +18,8 @@ add_executable(main
         src/main.cpp
         src/mp3fs.cpp
         src/context.cpp
+        src/mp3_file.cpp
+        src/mp3vector.cpp
 )
 
 target_link_libraries(main ${FUSE_LIBRARIES})
