@@ -47,7 +47,7 @@ int bb_readlink(const char *path, char *link, size_t size) {
         return 0;
     }
 
-    retstat = log_syscall("fpath", readlink(fpath, link, size - 1), 0);
+  //  retstat = log_syscall("fpath", readlink(fpath, link, size - 1), 0);
     if (retstat >= 0) {
         link[retstat] = '\0';
         retstat = 0;
@@ -107,7 +107,7 @@ int bb_symlink(const char *path, const char *link) {
     log_msg("\nbb_symlink(path=\"%s\", link=\"%s\")\n", path, link);
     bb_fullpath(flink, link);
 
-    return log_syscall("symlink", symlink(path, flink), 0);
+    return 1;//log_syscall("symlink", symlink(path, flink), 0);
 }
 
 int bb_rename(const char *path, const char *newpath) {

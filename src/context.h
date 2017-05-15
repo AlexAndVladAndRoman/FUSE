@@ -2,6 +2,7 @@
 #define CONTEXT_H
 
 #include "mp3vector.h"
+#include "params.h"
 
 #include <fstream>
 #include <string>
@@ -10,9 +11,7 @@
 constexpr char LOG_FILE[12] = "mp3fs.log";
 
 struct context {
-    context(char* rootdir) : rootdir(rootdir), log_stream(LOG_FILE) {
-    }
-
+    context(char* rootdir);
     static context* get();
 
     static std::ofstream& log();
