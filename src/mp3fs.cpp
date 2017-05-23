@@ -11,14 +11,14 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
     context::log() << "getattr path =\"" << path << "\"" << std::endl;
 
     if (std::string(path) == "/") {
-        statbuf->st_mode = S_IFDIR | 644;
+        statbuf->st_mode = S_IFDIR | 0644;
         statbuf->st_nlink = 1;
         auto files = context::get()->files();
         for (auto file : files) {
             statbuf->st_nlink++;
         }
     } else if (std::count(path, path + strlen(path), '/') == 1) {
-        statbuf->st_mode = S_IFDIR | 644;
+        statbuf->st_mode = S_IFDIR | 0644;
         statbuf->st_nlink = 1;
         auto files = context::get()->files().filter("album", std::string(path).substr(1, strlen(path) - 1));
 
@@ -29,7 +29,7 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
             statbuf->st_nlink++;
         }
     } else {
-        statbuf->st_mode = S_IFLNK | 644;
+        statbuf->st_mode = S_IFLNK | 0644;
         statbuf->st_nlink = 1;
     }
 
