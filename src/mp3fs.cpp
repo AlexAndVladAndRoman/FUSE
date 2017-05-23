@@ -20,8 +20,12 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
     } else if (std::count(path, path + strlen(path), '/') == 1) {
         statbuf->st_mode = S_IFDIR | 644;
         statbuf->st_nlink = 1;
-        auto files = context::get()->files().filter("album", std::string(path).substr(1, strlen(path) - 2));
+        auto files = context::get()->files().filter("album", std::string(path).substr(1, strlen(path) - 1));
+
+        context::log() << "FICK " << files.size() << std::endl;
+
         for (auto file : files) {
+        context::log() << "FICK " << file << std::endl;
             statbuf->st_nlink++;
         }
     } else {

@@ -21,8 +21,12 @@ mp3vector mp3vector::filter(std::string property, std::string value) {
     //TODO: THIS SHIT ISNT WORKING VLAD PLES FIX
     context::get()->log() << "FUCK" << std::endl;
     mp3vector temp;
-    temp.resize(this->size());
-    std::copy_if(this->begin(), this->end(), temp.begin(), [property, value](std::string a) { return mp3_file(a).get_property(property) == value; });
+
+    for (auto song : *this) {
+        if (mp3_file(song).get_property(property) == value) {
+            temp.push_back(song);
+        }
+    }
     return temp;
 }
 
