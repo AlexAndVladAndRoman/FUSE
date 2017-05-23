@@ -39,8 +39,8 @@ int mp3fs::readlink(const char *path, char *link, size_t size) {
     auto name = path_str.substr(path_str.find_last_of("/") + 1);
 
     auto files = context::get()->files();
-    ::strcpy(link, (std::string(context::get()->get_root()) + "/" + *std::find_if(files.begin(), files.end(), [name](std::string file) {
-                        return file.find(name);
+    ::strcpy(link, (*std::find_if(files.begin(), files.end(), [name](std::string file) {
+                        return std::string::npos != file.find(name);
                     })).c_str());
     context::log() << "link = " << link << std::endl << std::endl;
 

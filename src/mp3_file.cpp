@@ -31,6 +31,8 @@ mp3_file::mp3_file(std::string path) : path(path) {
     tag = tagStruct.tag;
     comment = tagStruct.comment;
     title = tagStruct.title;
+
+    /* context::get()->log() << "file = \"" << path << "\" " << " album = \"" << album << "\"" << " artist = \"" << artist << "\"" << std::endl; */
 }
 
 std::string mp3_file::get_artist() {
