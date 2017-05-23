@@ -25,7 +25,7 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
         context::log() << "FICK " << files.size() << std::endl;
 
         for (auto file : files) {
-        context::log() << "FICK " << file << std::endl;
+            context::log() << "FICK " << file << std::endl;
             statbuf->st_nlink++;
         }
     } else {
@@ -43,9 +43,7 @@ int mp3fs::readlink(const char *path, char *link, size_t size) {
     auto name = path_str.substr(path_str.find_last_of("/") + 1);
 
     auto files = context::get()->files();
-    ::strcpy(link, (*std::find_if(files.begin(), files.end(), [name](std::string file) {
-                        return std::string::npos != file.find(name);
-                    })).c_str());
+    ::strcpy(link, (*std::find_if(files.begin(), files.end(), [name](std::string file) { return std::string::npos != file.find(name); })).c_str());
     context::log() << "link = " << link << std::endl << std::endl;
 
     return 0;
@@ -53,6 +51,9 @@ int mp3fs::readlink(const char *path, char *link, size_t size) {
 
 int mp3fs::readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t offset, struct fuse_file_info *fi) {
     context::log() << "readdir path =\"" << path << "\"" << std::endl;
+
+    filler(buf, ".", nullptr, 0);
+    filler(buf, "..", nullptr, 0);
 
     if (std::string(path) == "/") {
         /* auto files = context::get()->files(); */
