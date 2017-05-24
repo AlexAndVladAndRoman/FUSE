@@ -1,7 +1,7 @@
 #include "mp3fs.h"
 #include "context.h"
 
-/* #include "bbfs.h" */
+#include "bbfs.h"
 
 #include <algorithm>
 #include <cstring>
@@ -103,6 +103,7 @@ int mp3fs::readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
     return 0;
 }
 
+
 int mp3fs::main(int argc, char *argv[], char *path) {
     std::cerr << "About to call fuse_main" << std::endl;
     int result = fuse_main(argc, argv, get_operations(), new context(path));
@@ -110,22 +111,113 @@ int mp3fs::main(int argc, char *argv[], char *path) {
     return result;
 }
 
+int taccess(const char *path, int mask) {
+    context::get()->log() << "access" << std::endl;
+    access(path, mask);
+    return 0;
+}
+
 fuse_operations *mp3fs::get_operations() {
     fuse_operations *operations = new fuse_operations();
     operations->getattr = getattr;
     operations->readlink = readlink;
     operations->readdir = readdir;
+    
 
-    /* operations->release = [](const char *, fuse_file_info *) { return 0; }; */
-
-    /* operations->fsync = [](const char *, int, fuse_file_info *) { return 0; }; */
-
-    /* operations->opendir = [](const char *, fuse_file_info *) { return 0; }; */
-
-    /* operations->statfs = [](const char *path, struct statvfs* b) { */
-    /* debug::log("fsync"); */
-    /* return 0; */
-    /* }; */
+    operations->access = [](const char *path, int mask) {
+        context::get()->log() << "access" << std::endl;
+        //access(path, mask);
+        return 0;
+    };
+    
+    operations->opendir = [](const char *path, struct fuse_file_info *fi){
+        context::get()->log() << "opendir" << std::endl;
+       /* DIR *dp;
+        dp = opendir(path);
+        fi->fh = (intptr_t)dp;*/
+        return 0;
+    };
+    operations->releasedir = [](const char *path, struct fuse_file_info *fi){
+        context::get()->log() << "releasedir" << std::endl;
+      //  closedir((DIR *)(uintptr_t)fi->fh);
+        return 0;
+    };
+    
+    //releasedir opendir access
+    
+    
+    operations->mknod = [](const char *path, mode_t mode, dev_t dev){
+        context::get()->log() << "mknod" << std::endl;
+        return 0;
+    };
+    operations->mkdir = [](const char *path, mode_t mode){
+        context::get()->log() << "mkdir" << std::endl;
+        return 0;
+    };
+    operations->unlink = [](const char *path){
+        context::get()->log() << "unlink" << std::endl;
+        return 0;
+    };
+    operations->rmdir = [](const char *path){
+        context::get()->log() << "rmdir" << std::endl;
+        return 0;
+    };
+    operations->symlink = [](const char *path, const char *link){
+        context::get()->log() << "symlink" << std::endl;
+        return 0;
+    };
+    operations->rename = [](const char *path, const char *newpath){
+        context::get()->log() << "rename" << std::endl;
+        return 0;
+    };
+    operations->link = [](const char *path, const char *newpath){
+        context::get()->log() << "link" << std::endl;
+        return 0;
+    };
+    operations->chmod = [](const char *path, mode_t mode){
+        context::get()->log() << "chmod" << std::endl;
+        return 0;
+    };
+    operations->chown = [](const char *path, uid_t uid, gid_t gid){
+        context::get()->log() << "chown" << std::endl;
+        return 0;
+    };
+    operations->truncate = [](const char *path, off_t newsize){
+        context::get()->log() << "truncate" << std::endl;
+        return 0;
+    };
+    operations->utime = [](const char *path, struct utimbuf *ubuf){
+        context::get()->log() << "utime" << std::endl;
+        return 0;
+    };
+    operations->open = [](const char *path, struct fuse_file_info *fi){
+        context::get()->log() << "open" << std::endl;
+        return 0;
+    };
+    operations->read = [](const char *path, char *buf, size_t size, off_t offset, struct fuse_file_info *fi){
+        context::get()->log() << "read" << std::endl;
+        return 0;
+    };
+    operations->write = [](const char *path, const char *buf, size_t size, off_t offset, struct fuse_file_info *fi){
+        context::get()->log() << "write" << std::endl;
+        return 0;
+    };
+    operations->statfs = [](const char *path, struct statvfs *statv){
+        context::get()->log() << "statfs" << std::endl;
+        return 0;
+    };
+    operations->flush = [](const char *path, struct fuse_file_info *fi){
+        context::get()->log() << "flush" << std::endl;
+        return 0;
+    };
+    operations->release = [](const char *path, struct fuse_file_info *fi){
+        context::get()->log() << "release" << std::endl;
+        return 0;
+    };
+    operations->fsync = [](const char *path, int datasync, struct fuse_file_info *fi){
+        context::get()->log() << "fsync" << std::endl;
+        return 0;
+    };
 
     return operations;
 }
