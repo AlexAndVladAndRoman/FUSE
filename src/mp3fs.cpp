@@ -27,16 +27,19 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
         }
     } else {
         if (std::count(path, path + strlen(path), '/') == 2) {
-            statbuf->st_mode = S_IFLNK | 0644;
-            statbuf->st_nlink = 1;
+            statbuf->st_mode = S_IFDIR | 0644;
             context::get()->log() << "  path// -> " << path << std::endl;
             auto files = context::get()->files().filter("album", std::string(path).substr(strrchr(path, '/') - path + 1, strlen(path) - 1));
             
             for (auto file : files) {
-                context::log() << "FOCK " << file << std::endl;
                 statbuf->st_nlink++;
             }
         }
+        else {
+            statbuf->st_mode = S_IFLNK | 0644;
+            statbuf->st_nlink = 1;
+        }
+
     }
 
     return 0;
