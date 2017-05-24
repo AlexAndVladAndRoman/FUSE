@@ -28,6 +28,7 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
     } else {
         if (std::count(path, path + strlen(path), '/') == 2) {
             statbuf->st_mode = S_IFDIR | 0644;
+            statbuf->st_nlink = 1;
             context::get()->log() << "  path// -> " << path << std::endl;
             auto files = context::get()->files().filter("album", std::string(path).substr(strrchr(path, '/') - path + 1, strlen(path) - 1));
             
@@ -56,7 +57,7 @@ int mp3fs::readlink(const char *path, char *link, size_t size) {
         link = ".hidden";
         return 0;
     }
-    ::strcpy(link, (*std::find_if(files.begin(), files.end(), [name](std::string file) { return std::string::npos != file.find(name); })).c_str());
+    ::strcpy(link, (*std::find_if(files.begin() , files.end(), [name](std::string file) { return std::string::npos != file.find(name); })).c_str());
     context::log() << "link = " << link << std::endl << std::endl;
 
     return 0;
