@@ -20,7 +20,7 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
     } else if (std::count(path, path + strlen(path), '/') == 1) {
         statbuf->st_mode = S_IFDIR | 0644;
         statbuf->st_nlink = 1;
-        auto files = context::get()->files().filter("album", std::string(path).substr(1, strlen(path) - 1));
+        auto files = context::get()->files().filter("artist", std::string(path).substr(1, strlen(path) - 1));
 
         context::log() << "FICK " << files.size() << std::endl;
 
@@ -29,8 +29,17 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
             statbuf->st_nlink++;
         }
     } else {
-        statbuf->st_mode = S_IFLNK | 0644;
-        statbuf->st_nlink = 1;
+        if (std::count(path, path + strlen(path), '/') == 2) {
+            statbuf->st_mode = S_IFLNK | 0644;
+            statbuf->st_nlink = 1;
+            context::get()->log() << "  path// -> " << path << std::endl;
+            auto files = context::get()->files().filter("album", std::string(path).substr(strrchr(path, '/') - path + 1, strlen(path) - 1));
+        
+            for (auto file : files) {
+                context::log() << "FOCK " << file << std::endl;
+                statbuf->st_nlink++;
+            }
+        }
     }
 
     return 0;
@@ -70,11 +79,22 @@ int mp3fs::readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
             filler(buf, album.c_str(), nullptr, 0);
         }
     } else {
-        std::string name = std::string(path).substr(1, strlen(path) - 1);
-        context::get()->log() << "  name -> " << name << std::endl;
-        auto files = context::get()->files().filter("album", name);
-        for (auto file : files) {
-            filler(buf, file.substr(file.find_last_of("/") + 1).c_str(), nullptr, 0);
+        if (std::count(path, path + strlen(path), '/') == 1) {
+            std::string name = std::string(path).substr(1, strlen(path) - 1);
+            context::get()->log() << "  name -> " << name << std::endl;
+            auto files = context::get()->files().filter("artist", name);
+            for (auto file : files) {
+                filler(buf, file.substr(file.find_last_of("/") + 1).c_str(), nullptr, 0);
+            }
+        }
+        else {
+            context::get()->log() << "  path// -> " << path << std::endl;
+            std::string name = std::string(path).substr(strrchr(path, '/') - path + 1, strlen(path) - 1);
+            context::get()->log() << "  name -> " << name << std::endl;
+            auto files = context::get()->files().filter("album", name);
+            for (auto file : files) {
+                filler(buf, file.substr(file.find_last_of("/") + 1).c_str(), nullptr, 0);
+            }
         }
     }
 
