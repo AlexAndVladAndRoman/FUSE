@@ -1,38 +1,3 @@
-#include "bbfs.h"
-
-struct fuse_operations bb_oper;
-void init_operations() {
-    bb_oper.getattr = bb_getattr;
-    bb_oper.readlink = bb_readlink;
-    /* bb_oper.mknod = bb_mknod; */
-    /* bb_oper.mkdir = bb_mkdir; */
-    /* bb_oper.unlink = bb_unlink; */
-    /* bb_oper.rmdir = bb_rmdir; */
-    /* bb_oper.symlink = bb_symlink; */
-    /* bb_oper.rename = bb_rename; */
-    /* bb_oper.link = bb_link; */
-    /* bb_oper.chmod = bb_chmod; */
-    /* bb_oper.chown = bb_chown; */
-    /* bb_oper.truncate = bb_truncate; */
-    /* bb_oper.utime = bb_utime; */
-    /* bb_oper.open = bb_open; */
-    /* bb_oper.read = bb_read; */
-    /* bb_oper.write = bb_write; */
-    /* bb_oper.statfs = bb_statfs; */
-    /* bb_oper.flush = bb_flush; */
-    /* bb_oper.release = bb_release; */
-    /* bb_oper.fsync = bb_fsync; */
-    bb_oper.opendir = bb_opendir;
-    bb_oper.readdir = bb_readdir;
-    bb_oper.releasedir = bb_releasedir;
-    /* bb_oper.fsyncdir = bb_fsyncdir; */
-    bb_oper.init = bb_init;
-    bb_oper.destroy = bb_destroy;
-    bb_oper.access = bb_access;
-    bb_oper.ftruncate = bb_ftruncate;
-    bb_oper.fgetattr = bb_fgetattr;
-}
-
 #include "mp3fs.h"
 
 #include <unistd.h>

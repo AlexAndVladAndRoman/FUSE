@@ -15,4 +15,4 @@ public:
     std::set<std::string> get_all(std::string property);
 };
 
-#endif /* end of include guard: MP3VECTOR_H */
+#endif /* MP3VECTOR_H */

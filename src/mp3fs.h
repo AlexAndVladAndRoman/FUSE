@@ -1,7 +1,7 @@
 #ifndef MP3FS_H
 #define MP3FS_H
 
-#include "params.h"
+#define FUSE_USE_VERSION 26
 
 #include <fuse.h>
 
