@@ -22,10 +22,7 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
         statbuf->st_nlink = 1;
         auto files = context::get()->files().filter("artist", std::string(path).substr(1, strlen(path) - 1));
 
-        context::log() << "FICK " << files.size() << std::endl;
-
         for (auto file : files) {
-            context::log() << "FICK " << file << std::endl;
             statbuf->st_nlink++;
         }
     } else {
@@ -82,9 +79,10 @@ int mp3fs::readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
         if (std::count(path, path + strlen(path), '/') == 1) {
             std::string name = std::string(path).substr(1, strlen(path) - 1);
             context::get()->log() << "  name -> " << name << std::endl;
-            auto files = context::get()->files().filter("artist", name);
-            for (auto file : files) {
-                filler(buf, file.substr(file.find_last_of("/") + 1).c_str(), nullptr, 0);
+            auto albums = context::get()->files().filter("artist", name).get_all("album");
+            for (auto album : albums) {
+                context::get()->log() << "  albomchiki  -> " << album << std::endl;
+                filler(buf, album.c_str(), nullptr, 0);
             }
         }
         else {
