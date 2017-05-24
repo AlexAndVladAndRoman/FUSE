@@ -13,8 +13,6 @@ find_package(FUSE REQUIRED)
 include_directories(${FUSE_INCLUDE_DIR})
 
 add_executable(main
-        src/bbfs.cpp
-        src/log.cpp
         src/main.cpp
         src/mp3fs.cpp
         src/context.cpp
