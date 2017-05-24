@@ -126,15 +126,15 @@ fuse_operations *mp3fs::get_operations() {
 
     operations->access = [](const char *path, int mask) {
         context::get()->log() << "access" << std::endl;
-        //access(path, mask);
+        access(path, mask);
         return 0;
     };
     
     operations->opendir = [](const char *path, struct fuse_file_info *fi){
         context::get()->log() << "opendir" << std::endl;
-       /* DIR *dp;
+        DIR *dp;
         dp = opendir(path);
-        fi->fh = (intptr_t)dp;*/
+        fi->fh = (intptr_t)dp;
         return 0;
     };
     operations->releasedir = [](const char *path, struct fuse_file_info *fi){
@@ -142,8 +142,13 @@ fuse_operations *mp3fs::get_operations() {
       //  closedir((DIR *)(uintptr_t)fi->fh);
         return 0;
     };
+    operations->statfs = [](const char *path, struct statvfs *statv){
+        context::get()->log() << "statfs" << std::endl;
+        statvfs(path, statv);
+        return 0;
+    };
     
-    //releasedir opendir access
+    //releasedir opendir access statfs
     
     
     operations->mknod = [](const char *path, mode_t mode, dev_t dev){
