@@ -34,7 +34,7 @@ int mp3fs::getattr(const char *path, struct stat *statbuf) {
             statbuf->st_nlink = 1;
             context::get()->log() << "  path// -> " << path << std::endl;
             auto files = context::get()->files().filter("album", std::string(path).substr(strrchr(path, '/') - path + 1, strlen(path) - 1));
-        
+            
             for (auto file : files) {
                 context::log() << "FOCK " << file << std::endl;
                 statbuf->st_nlink++;
@@ -73,10 +73,10 @@ int mp3fs::readdir(const char *path, void *buf, fuse_fill_dir_t filler, off_t of
         /* for (auto file : files) { */
         /* filler(buf, file.substr(file.find_last_of("/") + 1).c_str(), nullptr, 0); */
         /* } */
-        auto albums = context::get()->files().get_all("album");
-        for (auto album : albums) {
-            context::get()->log() << "  " << album << std::endl;
-            filler(buf, album.c_str(), nullptr, 0);
+        auto artists = context::get()->files().get_all("artist");
+        for (auto artist : artists) {
+            context::get()->log() << "  " << artist << std::endl;
+            filler(buf, artist.c_str(), nullptr, 0);
         }
     } else {
         if (std::count(path, path + strlen(path), '/') == 1) {
