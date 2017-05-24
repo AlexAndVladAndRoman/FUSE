@@ -171,6 +171,6 @@ std::string mp3_file::get_property(std::string property) {
     } else if (property == "genre") {
         return get_genre();
     } else {
-        throw "happens";  
+        throw "FUCK YOU";  // TODO: WTF???
     }
 }

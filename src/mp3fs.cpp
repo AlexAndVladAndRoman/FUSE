@@ -1,11 +1,11 @@
 #include "mp3fs.h"
 #include "context.h"
 
+#include "bbfs.h"
+
 #include <algorithm>
 #include <cstring>
 #include <iostream>
-#include <unistd.h>
-#include <dirent.h>
 
 int mp3fs::getattr(const char *path, struct stat *statbuf) {
     context::log() << "getattr path =\"" << path << "\"" << std::endl;
@@ -111,6 +111,11 @@ int mp3fs::main(int argc, char *argv[], char *path) {
     return result;
 }
 
+int taccess(const char *path, int mask) {
+    context::get()->log() << "access" << std::endl;
+    access(path, mask);
+    return 0;
+}
 
 fuse_operations *mp3fs::get_operations() {
     fuse_operations *operations = new fuse_operations();

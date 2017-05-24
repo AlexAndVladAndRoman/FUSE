@@ -1,9 +1,8 @@
 #ifndef CONTEXT_H
 #define CONTEXT_H
 
-#define FUSE_USE_VERSION 26
-
 #include "mp3vector.h"
+#include "params.h"
 
 #include <fstream>
 #include <string>
