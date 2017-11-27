@@ -20,6 +20,8 @@ char* context::get_root() {
     return rootdir;
 }
 
+//lul
+
 mp3vector context::files() {
     mp3vector temp = files(rootdir);
     std::transform(temp.begin(), temp.end(), temp.begin(), [this](std::string file) { return std::string(rootdir) + "/" + file; });
